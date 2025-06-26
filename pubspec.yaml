@@ -37,6 +37,9 @@ dependencies:
   lottie: ^3.3.1
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  flutter_launcher_icons: ^0.14.4
+  rename: ^3.1.0
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:
@@ -64,6 +67,7 @@ flutter:
   assets:
     - assets/images/
     - assets/lotties/
+    - assets/icons/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -91,3 +95,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+flutter_icons:
+  android: true
+  ios: true
+  image_path_android: "assets/icons/Ai.png"
+  image_path_ios: "assets/icons/Ai.png"

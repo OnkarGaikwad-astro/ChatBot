@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:onkar_new_app/chat_session_page.dart';
 
@@ -19,12 +20,14 @@ class _ChatWidgetState extends State<ChatWidget> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) {
-              return ChatSessionPage(contact: widget.contact,profilepic: widget.profilepic,);
+              return ChatSessionPage(
+                contact: widget.contact,
+                profilepic: widget.profilepic,
+              );
             },
           ),
         );
@@ -48,8 +51,8 @@ class _ChatWidgetState extends State<ChatWidget> {
                     child: SizedBox(
                       height: 50,
                       width: 50,
-                      child: Image.network(
-                        widget.profilepic,
+                      child: Image.file(
+                        File(widget.profilepic),
                         fit: BoxFit.cover,
                       ),
                     ),

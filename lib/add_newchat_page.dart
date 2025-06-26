@@ -1,6 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:onkar_new_app/add_members.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:onkar_new_app/data/text_styles.dart';
 import 'package:onkar_new_app/main.dart';
 import 'package:onkar_new_app/root_page.dart';
@@ -11,20 +13,28 @@ class AddNewchatPage extends StatefulWidget {
   State<AddNewchatPage> createState() => _AddNewchatPageState();
 }
 
-TextEditingController ProfilePicLinkController = TextEditingController();
 TextEditingController GroupNameController = TextEditingController();
 String GroupName = "";
-String profilepiclink =
-    "https://www.creativefabrica.com/wp-content/uploads/2019/02/Camera-icon-by-ahlangraphic-27-312x208.jpg";
+String Profilepic = "assets/images/camera.png";
 
 class _AddNewchatPageState extends State<AddNewchatPage> {
-  void AfterEnter() {
-    GroupName = GroupNameController.text;
+  File? imagefile;
+
+  Future<void> picImageandSavepath() async {
+    final picker = ImagePicker();
+    final picked = await picker.pickImage(source: ImageSource.gallery);
+
+    if (picked != null) {
+      setState(() {
+        final Imagepath = picked.path;
+        imagefile = File(Imagepath);
+      });
+      Navigator.pop(context);
+    }
   }
 
-  void ProfilePic() {
-    profilepiclink = ProfilePicLinkController.text;
-    ProfilePicLinkController.text = "";
+  void AfterEnter() {
+    GroupName = GroupNameController.text;
   }
 
   @override
@@ -66,33 +76,7 @@ class _AddNewchatPageState extends State<AddNewchatPage> {
                       actions: [
                         OutlinedButton(
                           onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: Text(
-                                    "Image Link",
-                                    style: KTextStyle.timestext,
-                                  ),
-                                  content: TextField(
-                                    controller: ProfilePicLinkController,
-                                    onSubmitted: (value) {
-                                      return setState(() {
-                                        profilepiclink =
-                                            ProfilePicLinkController.text;
-                                      });
-                                    },
-                                    decoration: InputDecoration(
-                                      hint: Text(
-                                        "Enter Image Link",
-                                        style: KTextStyle.timestext,
-                                      ),
-                                      border: OutlineInputBorder(),
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
+                            picImageandSavepath();
                           },
                           child: Text("Upload Image"),
                         ),
@@ -103,7 +87,9 @@ class _AddNewchatPageState extends State<AddNewchatPage> {
               },
               child: CircleAvatar(
                 radius: 22,
-                backgroundImage: NetworkImage(profilepiclink),
+                backgroundImage: imagefile != null
+                    ? FileImage(imagefile!) as ImageProvider
+                    : AssetImage(Profilepic),
               ),
             ),
           ),
@@ -130,11 +116,6 @@ class _AddNewchatPageState extends State<AddNewchatPage> {
               ),
             ),
           ),
-          Positioned(top: 160,left: 120,child: TextButton(onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return AddMembers();
-            },));
-          }, child: Row(children: [Text("Add Members "),Icon(Icons.keyboard_double_arrow_right_outlined)],),)),
           Positioned(
             left: 121,
             top: 230,
@@ -156,7 +137,7 @@ class _AddNewchatPageState extends State<AddNewchatPage> {
         if (GroupNameController.text != "") {
           AllContactNames.add(GroupNameController.text);
           filteredlist = List.from(AllContactNames);
-          AllProfilePic.add(ProfilePicLinkController.text);
+          AllProfilePic.add(imagefile!.path);
           filteredprofilelist = List.from(AllProfilePic);
 
           // Save contacts
@@ -168,8 +149,6 @@ class _AddNewchatPageState extends State<AddNewchatPage> {
           var box = Hive.box('chatlistBox');
           int itemCount = box.length;
           print("Total items in box: $itemCount");
-          profilepiclink =
-              "https://www.creativefabrica.com/wp-content/uploads/2019/02/Camera-icon-by-ahlangraphic-27-312x208.jpg";
 
           print(filteredlist);
         }
