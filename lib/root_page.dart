@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:onkar_new_app/add_newchat_page.dart';
 import 'package:onkar_new_app/chat_page.dart';
 import 'package:onkar_new_app/data/notifiers.dart';
+import 'package:onkar_new_app/main.dart';
 import 'package:onkar_new_app/settings_page.dart';
 
 int SelectedPage = 0;
@@ -51,8 +52,15 @@ class _RootPageState extends State<RootPage> {
               ),
               PopupMenuItem(
                 child: Text("Delete All Contacts"),
-                onTap: () {
+                onTap: () async {
                   Clearchatlist();
+                  // setState(() {});
+                  Future.delayed(Duration(milliseconds: 100), () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => RootPage()),
+                    );
+                  });
                 },
               ),
               PopupMenuItem(child: Text("Item 3")),
@@ -106,5 +114,13 @@ class _RootPageState extends State<RootPage> {
   void Clearchatlist() async {
     var box = Hive.box('chatlistBox');
     await box.clear();
+    AllContactNames.clear();
+    AllProfilePic.clear();
+    filteredlist.clear();
+    filteredprofilelist.clear();
+    AllContactNames.add("Onkar");
+    AllProfilePic.add(
+      "/data/user/0/com.example.onkar_new_app/cache/129bacb3-73df-49e2-bdcf-f6ec66cd1a01/spider-man-hoodie-4k-ee5y1xior0ls1e19.jpg",
+    );
   }
 }

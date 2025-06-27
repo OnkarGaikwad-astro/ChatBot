@@ -107,10 +107,10 @@ class _AddNewchatPageState extends State<AddNewchatPage> {
                 decoration: InputDecoration(
                   hint: Text("Enter Group Name", style: KTextStyle.timestext),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green),
+                    borderSide: BorderSide(color: const Color.fromARGB(255, 142, 221, 213)),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.green),
+                    borderSide: BorderSide(color: const Color.fromARGB(255, 101, 202, 192)),
                   ),
                 ),
               ),
@@ -118,7 +118,7 @@ class _AddNewchatPageState extends State<AddNewchatPage> {
           ),
           Positioned(
             left: 121,
-            top: 230,
+            top: 150,
             child: ElevatedButton(
               onPressed: () {
                 onCreateGroupPressed();
@@ -137,7 +137,7 @@ class _AddNewchatPageState extends State<AddNewchatPage> {
         if (GroupNameController.text != "") {
           AllContactNames.add(GroupNameController.text);
           filteredlist = List.from(AllContactNames);
-          AllProfilePic.add(imagefile!.path);
+          AllProfilePic.add(imagefile!=null?imagefile!.path:"/data/user/0/com.example.onkar_new_app/cache/129bacb3-73df-49e2-bdcf-f6ec66cd1a01/spider-man-hoodie-4k-ee5y1xior0ls1e19.jpg");
           filteredprofilelist = List.from(AllProfilePic);
 
           // Save contacts
@@ -154,6 +154,7 @@ class _AddNewchatPageState extends State<AddNewchatPage> {
         }
 
         GroupNameController.text = "";
+        imagefile!="";
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

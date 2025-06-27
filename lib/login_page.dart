@@ -14,34 +14,36 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Center(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 150,
-              child: Stack(
-                children: [
-                  Positioned(left: 25,bottom: 5,child: Text("ChatBot",style: TextStyle(fontSize: 30,fontWeight: FontWeight.w400,fontFamily: "Times New Roman"),))
-                ],
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 150,
+                child: Stack(
+                  children: [
+                    Positioned(left: 25,bottom: 5,child: Text("ChatBot",style: TextStyle(fontSize: 30,fontWeight: FontWeight.w400,fontFamily: "Times New Roman"),))
+                  ],
+                ),
               ),
-            ),
-            SizedBox(
-              height: 75,
-            ),
-            Lottie.asset("assets/lotties/welcome.json"),
-            SizedBox(
-              height: 75,
-            ),
-            ElevatedButton(onPressed: () {
-              
-            }, child:Text("Login with Google")),
-            SizedBox(height: 20,child: Text("or"),),
-            ElevatedButton(onPressed: () {
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-                return RootPage();
-              },));
-            }, child: Text("Skip"))
-          ],
+              SizedBox(
+                height: 75,
+              ),
+              Lottie.asset("assets/lotties/welcome.json"),
+              SizedBox(
+                height: 75,
+              ),
+              ElevatedButton(onPressed: () {
+                
+              }, child:Text("Login with Google")),
+              SizedBox(height: 20,child: Text("or"),),
+              ElevatedButton(onPressed: () {
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+                  return RootPage();
+                },));
+              }, child: Text("Skip"))
+            ],
+          ),
         ),
       ),
     );
