@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:onkar_new_app/chat_widget.dart';
 import 'package:onkar_new_app/main.dart';
 
 TextEditingController SearchController = TextEditingController();
 String SearchBarText = "Search chats";
+
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -67,7 +71,10 @@ class ChatPageState extends State<ChatPage> {
               itemCount: filteredlist.length,
               itemBuilder: (context, index) {
                 final contact = filteredlist[index];
-                final profilepic = filteredprofilelist[index];
+                final profilepic = filteredprofilelist[index];     
+                File? imagefile = Hive.box("settingsBox").get("bgimage_${contact}") != null
+    ? File(Hive.box("settingsBox").get("bgimage_${contact}"))
+    : null;   
                 return ChatWidget(profilepic: profilepic, contact: contact);
               },
             ),

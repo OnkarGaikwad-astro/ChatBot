@@ -11,15 +11,30 @@ class ChatWidget extends StatefulWidget {
 
   final String profilepic;
   final String contact;
+
+  
   @override
   State<ChatWidget> createState() => _ChatWidgetState();
 }
 
 class _ChatWidgetState extends State<ChatWidget> {
+  Color containerColor = const Color.fromARGB(0, 255, 255, 255);
+
+  void flash() async {
+    setState(() {
+      containerColor = const Color.fromARGB(82, 255, 255, 255);
+    });
+    await Future.delayed(Duration(milliseconds: 100));
+    setState(() => containerColor = const Color.fromARGB(0, 255, 255, 255));
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
+        temp_message =[];
+        flash();
+        await Future.delayed(Duration(milliseconds: 100));
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -31,13 +46,17 @@ class _ChatWidgetState extends State<ChatWidget> {
             },
           ),
         );
+        setState(() {
+          Messages = [];
+        });
       },
+
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: const Color.fromARGB(3, 255, 255, 255),
+            color: containerColor,
           ),
           height: 50,
           width: 200,
@@ -78,6 +97,7 @@ class _ChatWidgetState extends State<ChatWidget> {
           ),
         ),
       ),
+      
     );
   }
 }

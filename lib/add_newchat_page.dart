@@ -107,10 +107,14 @@ class _AddNewchatPageState extends State<AddNewchatPage> {
                 decoration: InputDecoration(
                   hint: Text("Enter Group Name", style: KTextStyle.timestext),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: const Color.fromARGB(255, 142, 221, 213)),
+                    borderSide: BorderSide(
+                      color: const Color.fromARGB(255, 142, 221, 213),
+                    ),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: const Color.fromARGB(255, 101, 202, 192)),
+                    borderSide: BorderSide(
+                      color: const Color.fromARGB(255, 101, 202, 192),
+                    ),
                   ),
                 ),
               ),
@@ -132,19 +136,25 @@ class _AddNewchatPageState extends State<AddNewchatPage> {
   }
 
   void onCreateGroupPressed() {
+      openChatBox(GroupNameController.text);
     if (GroupNameController.text != "") {
+
       setState(() {
         if (GroupNameController.text != "") {
           AllContactNames.add(GroupNameController.text);
           filteredlist = List.from(AllContactNames);
-          AllProfilePic.add(imagefile!=null?imagefile!.path:"/data/user/0/com.example.onkar_new_app/cache/129bacb3-73df-49e2-bdcf-f6ec66cd1a01/spider-man-hoodie-4k-ee5y1xior0ls1e19.jpg");
+          AllProfilePic.add(
+            imagefile != null
+                ? imagefile!.path
+                : "/data/user/0/com.example.onkar_new_app/cache/129bacb3-73df-49e2-bdcf-f6ec66cd1a01/spider-man-hoodie-4k-ee5y1xior0ls1e19.jpg",
+          );
           filteredprofilelist = List.from(AllProfilePic);
 
           // Save contacts
           for (int i = 0; i < AllContactNames.length; i++) {
             Hive.box("chatlistBox").put("GroupName${i}", AllContactNames[i]);
-            Hive.box("profilepicBox").put("GroupName${i}", AllProfilePic[i]);
-            print(Hive.box("chatlistBox").get("GroupName${i}"));
+            Hive.box("profilepicBox").put("${AllContactNames[i]}", AllProfilePic[i]);
+            print(Hive.box("profilepicBox").get("${AllContactNames[i]}"));
           }
           var box = Hive.box('chatlistBox');
           int itemCount = box.length;
@@ -154,7 +164,7 @@ class _AddNewchatPageState extends State<AddNewchatPage> {
         }
 
         GroupNameController.text = "";
-        imagefile!="";
+        imagefile != "";
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -166,4 +176,14 @@ class _AddNewchatPageState extends State<AddNewchatPage> {
       });
     }
   }
+  Future<Box> openChatBox(String contactName) async {
+  final boxName = 'chat_${contactName.toLowerCase()}';
+  
+  if (!Hive.isBoxOpen(boxName)) {
+    return await Hive.openBox(boxName);
+  } else {
+    return Hive.box(boxName);
+  }
+}
+
 }
